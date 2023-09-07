@@ -1,1 +1,128 @@
-<p>reactive works!</p>
+<h4>Reactive Form</h4>
+<hr>
+<form autocomplete="off" class="d-flex justify-content-center align-items-center" [formGroup]="form"
+  (ngSubmit)="save()">
+
+  <div class="col-9">
+
+    <div class="form-group row my-2">
+      <label class="col-2 col-form-label">Name</label>
+      <div class="col">
+        <input formControlName="name" class="form-control" type="text" placeholder="Name"
+          [class.is-invalid]="hasError('name')">
+        <small *ngIf="hasError('name')" class="form-text text-danger">Should have at least 5
+          characters.</small>
+      </div>
+    </div>
+
+    <div class="form-group row my-2">
+      <label class="col-2 col-form-label">Last name</label>
+      <div class="col">
+        <input formControlName="lastName" class="form-control" type="text" placeholder="Last name"
+          [class.is-invalid]="hasError('lastName')">
+        <small *ngIf="hasError('lastName')" class="form-text text-danger">Should have at least 5
+          characters.</small>
+      </div>
+    </div>
+
+
+    <div class="form-group row my-2">
+      <label class="col-2 col-form-label">Email</label>
+      <div class="col">
+        <input formControlName="email" class="form-control" type="email" placeholder="Email electrónico"
+          [class.is-invalid]="hasError('email')">
+        <small *ngIf="hasError('email')" class="form-text text-danger">Email is required.</small>
+      </div>
+    </div>
+
+    <div class="form-group row my-2">
+      <label class="col-2 col-form-label">User</label>
+      <div class="col">
+        <input formControlName="user" class="form-control" type="text" placeholder="User"
+          [class.is-invalid]="hasError('user')">
+        <small *ngIf="hasError('user')" class="form-text text-danger">User already exist.</small>
+      </div>
+    </div>
+
+    <div class="form-group row my-2" formGroupName="address">
+      <label class="col-2 col-form-label">Address</label>
+      <div class="row col">
+        <div class="col">
+          <input [class.is-invalid]="hasError('address.district')" type="text" class="form-control"
+            placeholder="District" formControlName="district">
+          <small *ngIf="hasError('address.district')" class="form-text text-danger">District is required.</small>
+        </div>
+        <div class="col">
+          <input [class.is-invalid]="hasError('address.city')" type="text" class="form-control" placeholder="City"
+            formControlName="city">
+          <small *ngIf="hasError('address.city')" class="form-text text-danger">City is required.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Id</th>
+              <th>Hobby</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="hobbies">
+            <tr *ngFor="let control of hobbies.controls; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <input type="text" class="form-control" [formControlName]="i">
+              </td>
+              <td>
+                <button class="btn btn-danger" (click)="deleteHobby(i)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" class="w-100 btn btn-primary mt-3 btn-block" (click)="addHobby()">+ New</button>
+      </div>
+    </div>
+
+    <div class="form-group row my-2">
+      <label class="col-2 col-form-label">Password 1</label>
+      <div class="col">
+        <input [class.is-invalid]="hasError('password1')" formControlName="password1" class="form-control" type="password"
+          placeholder="Password 1">
+        <small *ngIf="hasError('password1')" class="form-text text-danger">Password is required.</small>
+      </div>
+    </div>
+
+    <div class="form-group row my-2">
+      <label class="col-2 col-form-label">Repeat password</label>
+      <div class="col">
+        <input [class.is-invalid]="hasError('password2')" formControlName="password2" class="form-control" type="password"
+          placeholder="Password 2">
+        <small *ngIf="passwordsNotEquals()" class="form-text text-danger">Passwords must be equals.</small>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group my-2 d-flex justify-content-around col float-end w-100">
+      <button type="submit" class="form-control btn btn-success btn-block">
+        Save
+      </button>
+    </div>
+
+  </div>
+
+</form>
+
+<hr>
+
+<pre>
+  Valid: {{ form.valid }}
+  Status: {{ form.status }}
+</pre>
+
+<pre>
+  {{ form.value | json }}
+</pre>
